@@ -1,0 +1,33 @@
+{% load icons %}
+<nav>
+    <div class="container side-by-side">
+        <main><a href="{% url "index" %}">trb</a></main>
+        <aside>
+            <div class="theme-switcher">
+                {% icon 'brightness' %}
+            </div>
+            <div class="search">
+                <label htmlFor="search">
+                    {% icon 'search' %}
+                    <input name="search" placeholder="Title of article" hx-post="{% url 'search_nested' %}"
+                    hx-on::after-request="if(event.detail.successful) document.querySelector('#results').classList.add('visible')"
+                    hx-trigger="keyup changed throttle:100ms" hx-target="#results" />
+                </label>
+                <ul id="results" class="nolist"></ul>
+            </div>
+        </aside>
+    </div>
+    <script>
+        (function(){
+            // light / dark theme switching
+            document.querySelector('.theme-switcher').addEventListener('click', function(){
+                var theme = localStorage.getItem("theme") || "dark";
+                var htmlTag = document.querySelector('html');
+                htmlTag.classList.toggle('theme--dark');
+                htmlTag.classList.toggle('theme--light');
+
+                localStorage.setItem("theme", theme == "light" ? "dark" : "light");
+            });
+        })();
+    </script>
+</nav>

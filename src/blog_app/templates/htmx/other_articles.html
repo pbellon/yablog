@@ -1,0 +1,9 @@
+{% if has_articles %}
+<ul class="nolist">
+    {% for article in articles %}
+    <li><a href="{% url 'article_detail' article.slug %}">{{ article.title }}</a></li>
+    {% endfor %}
+</ul>
+{% else %}
+<p>No other articles found</p>
+{% endif %}

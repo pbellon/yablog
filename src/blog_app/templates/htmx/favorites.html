@@ -1,0 +1,8 @@
+{% if has_favorites %}
+<h3>Favorites</h3>
+<ul class="nolist">
+    {% for fav in favorites %}
+        <li><a href="{% url 'article_detail' fav.article.slug %}">{{ fav.article.title }}</a></li>
+    {% endfor %}
+</ul>
+{% endif %}

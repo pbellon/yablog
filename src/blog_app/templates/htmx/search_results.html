@@ -1,0 +1,7 @@
+{% if has_results %}
+    {% for result in results %}
+    <li><a href="{% url 'article_detail' result.slug %}">{{ result.title | safe }}</a></li>
+    {% endfor %}
+{% else %}
+    <li>No results</li>
+{% endif %}

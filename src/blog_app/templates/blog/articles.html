@@ -1,0 +1,11 @@
+{% extends "shared/base.html" %}
+
+{% block title%}Latest articles{% endblock %}
+{% block content %}
+    <h1>Latest Articles</h1>
+    <ul class="nolist">
+        {% for article in articles %}
+        <li><a href="{% url 'article_detail' article.slug %}">{{ article.title }}</a></li>
+        {% endfor %}
+    </ul>
+{% endblock %}
