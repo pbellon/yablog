@@ -3,19 +3,20 @@
 from django.db import migrations
 from markdown import markdown
 
+
 def parse_markdown_for_existing_articles(apps, schema_editor):
-    Article = apps.get_model('blog_app', 'Article')
+    Article = apps.get_model("blog_app", "Article")
     for article in Article.objects.all():
-        article.title_parsed = markdown(article.title, extensions=['extra'])[3:-4]
-        article.content_parsed = markdown(article.content, extensions=['extra'])
+        article.title_parsed = markdown(article.title, extensions=["extra"])[3:-4]
+        article.content_parsed = markdown(article.content, extensions=["extra"])
         article.save()
 
-class Migration(migrations.Migration):
 
+class Migration(migrations.Migration):
     dependencies = [
-        ('blog_app', '0005_article_content_parsed_article_title_parsed'),
+        ("blog_app", "0005_article_content_parsed_article_title_parsed"),
     ]
 
     operations = [
-         migrations.RunPython(parse_markdown_for_existing_articles),
+        migrations.RunPython(parse_markdown_for_existing_articles),
     ]

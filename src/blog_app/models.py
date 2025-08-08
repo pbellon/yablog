@@ -16,20 +16,16 @@ class ArticleTag(models.Model):
 
     def __str__(self):
         return self.name
-    
 
 
 class Article(models.Model):
     class Meta:
-        indexes = [
-            models.Index(fields=['slug']),
-            models.Index(fields=['title'])
-        ]
+        indexes = [models.Index(fields=["slug"]), models.Index(fields=["title"])]
 
     creation_date = models.DateField(auto_now_add=True)
     last_update_date = models.DateField(auto_now=True)
     title = models.CharField(max_length=140)
-    content = models.TextField() 
+    content = models.TextField()
     slug = models.SlugField(unique=True, blank=True)
     tags = models.ManyToManyField(ArticleTag, blank=True)
 
@@ -41,22 +37,22 @@ class Article(models.Model):
 
         self.content_parsed = markdown(
             self.content,
-            extensions=['fenced_code', 'codehilite'],
+            extensions=["fenced_code", "codehilite"],
             extension_configs={
-                'codehilite': {
-                    "guess_lang": False,   # don't mis-detect plain code
-                    "linenums": False,     # or True if you want line numbers
-                    "noclasses": True,    # True -> inline styles (no CSS file needed)
+                "codehilite": {
+                    "guess_lang": False,  # don't mis-detect plain code
+                    "linenums": False,  # or True if you want line numbers
+                    "noclasses": True,  # True -> inline styles (no CSS file needed)
                     "pygments_style": "emacs",  # pick any Pygments style
                 }
-            }
+            },
         )
 
         super().save(*args, **kwargs)
 
     def __str__(self):
         return self.title
-    
+
 
 class FavoriteArticle(models.Model):
     article = models.ForeignKey(Article, on_delete=models.CASCADE)

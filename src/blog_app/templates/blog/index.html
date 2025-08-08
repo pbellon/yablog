@@ -1,26 +1,13 @@
-{% extends "shared/base.html" %}
+{% extends 'shared/base.html' %}
 
-{% block title %}Home{% endblock %}
+{% block title %}
+  Home
+{% endblock %}
 
 {% block content %}
-    <h1>Welcome to the Home Page</h1>
-    
-    <div class="articles">
-    {% for article in articles %}
-        <div class="article">
-            <header>
-                <a hx-boost href="{% url 'article_detail' article.slug %}">
-                    <span class="date">
-                        {{ article.creation_date }}
-                    </span>
-                    {{ article.title }}
-                </a>
-            </header>
+  <h1>Welcome to the Home Page</h1>
 
-            <div class="strip">
-                {{ article.content_parsed|safe }}
-            </div>
-        </div>
-    {% endfor %}
-    </div>
+  <div class="articles">
+    {% include 'htmx/paginated_articles.html' with paginated_articles=paginated_articles %}
+  </div>
 {% endblock %}

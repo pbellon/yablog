@@ -1,0 +1,24 @@
+{% load inline_static %}
+
+{% for article in paginated_articles %}
+  <div class="article">
+    <header>
+      <a hx-boost href="{% url 'article_detail' article.slug %}">
+        <span class="date">{{ article.creation_date }}</span>
+        {{ article.title }}
+      </a>
+    </header>
+
+    <div class="strip">{{ article.content_parsed|safe }}</div>
+  </div>
+{% endfor %}
+
+{% if paginated_articles.has_next %}
+  <div class="lazy-loader" hx-on::after-request="if (event.detail.successful) this.remove()" hx-get="{% url 'paginated_articles' %}?p={{ paginated_articles.next_page_number }}" hx-trigger="revealed" hx-swap="afterend" hx-indicator="closest div">
+    <div class="htmx-indicator">
+      {% image 'loader' %}
+    </div>
+  </div>
+{% else %}
+  <!-- No more articles to load -->
+{% endif %}

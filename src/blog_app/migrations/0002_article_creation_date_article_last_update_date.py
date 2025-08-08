@@ -5,21 +5,22 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('blog_app', '0001_initial'),
+        ("blog_app", "0001_initial"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='article',
-            name='creation_date',
-            field=models.DateField(auto_now_add=True, default=django.utils.timezone.now),
+            model_name="article",
+            name="creation_date",
+            field=models.DateField(
+                auto_now_add=True, default=django.utils.timezone.now
+            ),
             preserve_default=False,
         ),
         migrations.AddField(
-            model_name='article',
-            name='last_update_date',
+            model_name="article",
+            name="last_update_date",
             field=models.DateField(auto_now=True),
         ),
     ]

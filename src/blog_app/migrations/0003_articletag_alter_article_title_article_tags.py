@@ -4,28 +4,35 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('blog_app', '0002_article_creation_date_article_last_update_date'),
+        ("blog_app", "0002_article_creation_date_article_last_update_date"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='ArticleTag',
+            name="ArticleTag",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=100)),
-                ('slug', models.SlugField(blank=True, unique=True)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=100)),
+                ("slug", models.SlugField(blank=True, unique=True)),
             ],
         ),
         migrations.AlterField(
-            model_name='article',
-            name='title',
+            model_name="article",
+            name="title",
             field=models.CharField(max_length=140),
         ),
         migrations.AddField(
-            model_name='article',
-            name='tags',
-            field=models.ManyToManyField(to='blog_app.articletag'),
+            model_name="article",
+            name="tags",
+            field=models.ManyToManyField(to="blog_app.articletag"),
         ),
     ]

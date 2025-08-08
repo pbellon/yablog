@@ -98,6 +98,10 @@ ul.nolist,ul.nolist li {
     padding-left: 0;
 }
 
+.articles .article {
+    margin-top: 2em;
+}
+
 .articles .article header {
     font-size: 1.5em;
 }
@@ -137,4 +141,16 @@ nav aside {
 
 .favorite-action.not-in-favorites .remove-from-favorites {
     display: none;
+}
+
+.htmx-indicator {
+    opacity: 0;
+    height: 50px;
+    transition: opacity 250ms ease-in;
+}
+
+.lazy-loader {
+    text-align: center;
+    margin: auto;
+    margin-top: 2em;
 }

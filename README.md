@@ -4,7 +4,7 @@ This project is here for me to catch up with latest django updates and, at the s
 experiment with [htmx][htmx]. Might really use this later.
 
 ## How to install & run
-```sh
+```bash
 # install uv, you can check https://docs.astral.sh/uv/getting-started/installation/
 # if you don't have curl available on your OS
 curl -LsSf https://astral.sh/uv/install.sh | sh

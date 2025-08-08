@@ -4,18 +4,17 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('blog_app', '0008_alter_article_tags'),
+        ("blog_app", "0008_alter_article_tags"),
     ]
 
     operations = [
         migrations.AddIndex(
-            model_name='article',
-            index=models.Index(fields=['slug'], name='blog_app_ar_slug_571615_idx'),
+            model_name="article",
+            index=models.Index(fields=["slug"], name="blog_app_ar_slug_571615_idx"),
         ),
         migrations.AddIndex(
-            model_name='article',
-            index=models.Index(fields=['title'], name='blog_app_ar_title_d52068_idx'),
+            model_name="article",
+            index=models.Index(fields=["title"], name="blog_app_ar_title_d52068_idx"),
         ),
     ]

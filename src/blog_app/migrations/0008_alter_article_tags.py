@@ -4,15 +4,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('blog_app', '0007_remove_article_title_parsed'),
+        ("blog_app", "0007_remove_article_title_parsed"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='article',
-            name='tags',
-            field=models.ManyToManyField(blank=True, to='blog_app.articletag'),
+            model_name="article",
+            name="tags",
+            field=models.ManyToManyField(blank=True, to="blog_app.articletag"),
         ),
     ]

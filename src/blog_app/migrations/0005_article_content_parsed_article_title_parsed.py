@@ -4,20 +4,19 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('blog_app', '0004_favoritearticle'),
+        ("blog_app", "0004_favoritearticle"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='article',
-            name='content_parsed',
+            model_name="article",
+            name="content_parsed",
             field=models.TextField(blank=True),
         ),
         migrations.AddField(
-            model_name='article',
-            name='title_parsed',
+            model_name="article",
+            name="title_parsed",
             field=models.TextField(blank=True),
         ),
     ]
