@@ -6,9 +6,140 @@
 
 <head>
     <title>{% block title %}Title{% endblock %}</title>
+    {% comment %} Minimalistic style to ensure proper display {% endcomment %}
+    <style> 
+        .htmx-indicator {
+            opacity: 0;
+        }
 
+        html.theme--light {
+            --background-color: #dcd7d7ee;
+            --font-color: #333;
+            --link-color: #0b82ea;
+        }
+
+        html.theme--dark {
+            --background-color: #333;
+            --font-color: #DDD;
+            --link-color: #0b82ea;
+        }
+
+        html, body {
+            background-color: var(--background-color);
+            margin: 0;
+        }
+
+        html {
+            color: var(--font-color);
+            font-family: "EB Garamond", setif;
+            font-optical-sizing: auto;
+            font-weight: 400;
+            font-style: normal;
+        }
+
+        html .icon-holder svg {
+            height: 1em;
+        }
+
+        .codehilite {
+            color: #333;
+            border-radius: 0.25em;
+            padding: 0.25em;
+        }
+
+        html {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        body {
+            padding: 1em;
+            padding-top: 0;
+            flex: 1;
+        }
+
+        a {
+            color: var(--link-color);
+        }
+
+        nav {
+            background-color: var(--background-color);
+            padding-top: 1em;
+            padding-bottom: 1em;
+            z-index: 200;
+            position: sticky;
+            top: 0;
+        }
+
+        nav #results {
+            background-color: var(--background-color);
+            width: 250px;
+            opacity: 0;
+            height: 0;
+            position: absolute;
+        }
+
+        .side-by-side {
+            display: flex;
+            gap: 1em;
+        }
+
+        .side-by-side main {
+            flex: 3;
+        }
+
+        .side-by-side aside {
+            flex: 1;
+        }
+
+        ul.nolist,ul.nolist li {
+            list-style: none;
+            appearance: unset;
+            margin-left: 0;
+            padding-left: 0;
+        }
+
+        .articles .article {
+            margin-top: 2em;
+        }
+
+        .articles .article header {
+            font-size: 1.5em;
+        }
+
+        nav .container {
+            display: flex;
+            justify-content: space-between;
+            gap: 1em;
+        }
+
+        nav .search {
+            display: flex;
+        }
+
+        nav aside {
+            justify-content: flex-end;
+            display: flex;
+            gap: 1em;
+        }
+
+        .container {
+            max-width: 80vw;
+            margin: auto;
+        }
+    </style>
+    <script>
+        var theme = localStorage.getItem('theme');
+        var htmlTag = document.querySelector("html");
+
+        if (theme == "light") {
+            htmlTag.classList.add('theme--light');
+        } else {
+            htmlTag.classList.add('theme--dark');
+        }
+    </script>
     <link rel="stylesheet" href="{% static "css/main.css" %}" />
-    {% htmx_script %}
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -25,16 +156,7 @@
             {% block side %}{% endblock %}
         </aside>
     </div>
+    {% htmx_script %}
+
 </body>
-
-<script>
-    var theme = localStorage.getItem('theme');
-    var htmlTag = document.querySelector("html");
-
-    if (theme == "light") {
-        htmlTag.classList.add('theme--light');
-    } else {
-        htmlTag.classList.add('theme--dark');
-    }
-</script>
 </html>

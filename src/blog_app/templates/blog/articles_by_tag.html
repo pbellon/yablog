@@ -2,10 +2,8 @@
 
 {% block title%}{{ tag.name }} articles{% endblock %}
 {% block content %}
-    <h1>{{ tag.name }} articles</h1>
-    <ul class="nolist">
-        {% for article in articles %}
-        <li><a href="{% url 'article_detail' article.slug %}">{{ article.title }}</a></li>
-        {% endfor %}
-    </ul>
+    <h1>All <code>{{ tag.name }}</code> tagged articles</h1>
+    <div class="articles">
+        {% include 'htmx/paginated_articles.html' with paginated_articles=paginated_articles tag=tag.slug %}
+    </div>
 {% endblock %}

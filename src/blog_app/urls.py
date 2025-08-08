@@ -6,7 +6,7 @@ urlpatterns = [
     path("", views.index, name="index"),
     path("articles/", RedirectView.as_view(url="/", permanent=True)),
     path("favorite-articles", views.get_favorites_articles, name="favorite_articles"),
-    path("paginated-articles", views.articles_paginated, name="paginated_articles"),
+    path("paginated-articles", views.paginated_articles, name="paginated_articles"),
     path("articles-by-tag/<slug:slug>", views.articles_by_tag, name="articles_by_tag"),
     path("articles/<slug:slug>", views.article_detail, name="article_detail"),
     path(
@@ -14,7 +14,7 @@ urlpatterns = [
         views.other_articles,
         name="other_articles",
     ),
-    path("search-nested", views.search_nested, name="search_nested"),
+    path("search", views.search, name="search"),
     path(
         "add-to-favorites/<int:id>",
         views.add_article_to_favorites,

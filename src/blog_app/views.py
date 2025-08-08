@@ -1,41 +1,53 @@
+from django.http.response import HttpResponseBadRequest
 from django.core.paginator import Paginator
 from django.shortcuts import get_object_or_404, render
-from django.http import HttpResponseBadRequest
 
 from blog_app.models import Article, ArticleTag, FavoriteArticle
 
 
-def articles_paginator():
+def paginated_articles(request):
+    page_number = request.GET.get("p")
+    tag_filter = request.GET.get("tag")
+
     articles_list = (
         Article.objects.only("creation_date", "slug", "title", "content_parsed")
         .order_by("-creation_date")
         .all()
     )
-    return Paginator(articles_list, 10)
+
+    if tag_filter is not None:
+        articles_list = articles_list.filter(tags__slug=tag_filter)
+
+    paginator = Paginator(
+        articles_list,
+        10,
+    )
+
+    if page_number is None:
+        return HttpResponseBadRequest('Missing "p" query parameter')
+
+    paginated_articles = paginator.get_page(page_number)
+
+    return render(
+        request,
+        "htmx/paginated_articles.html",
+        {"paginated_articles": paginated_articles, "tag": tag_filter},
+    )
 
 
 # root endpoint
 def index(request):
-    paginator = articles_paginator()
+    paginator = Paginator(
+        Article.objects.only("creation_date", "slug", "title", "content_parsed")
+        .order_by("-creation_date")
+        .all(),
+        10,
+    )
+
     # At index we only load first page, see articles_paginated below
     page_obj = paginator.get_page(1)
 
     return render(request, "blog/index.html", {"paginated_articles": page_obj})
-
-
-# HTMx view
-def articles_paginated(request):
-    page_number = request.GET.get("p")
-
-    if page_number is None:
-        return HttpResponseBadRequest("Missing 'p' query parameter")
-
-    paginator = articles_paginator()
-    page_obj = paginator.get_page(page_number)
-
-    return render(
-        request, "htmx/paginated_articles.html", {"paginated_articles": page_obj}
-    )
 
 
 def article_detail(request, slug):
@@ -67,9 +79,18 @@ def article_detail(request, slug):
 
 def articles_by_tag(request, slug):
     tag = get_object_or_404(ArticleTag, slug=slug)
-    articles = Article.objects.filter(tags__id=tag.id)
+
+    articles_list = Article.objects.only(
+        "slug", "title", "content_parsed", "creation_date", "tags"
+    ).filter(tags__id=tag.id)
+
+    paginator = Paginator(articles_list, 10)
+    paginated_articles = paginator.get_page(1)
+
     return render(
-        request, "blog/articles_by_tag.html", {"articles": articles, "tag": tag}
+        request,
+        "blog/articles_by_tag.html",
+        {"paginated_articles": paginated_articles, "tag": tag},
     )
 
 
@@ -135,12 +156,16 @@ def get_favorites_articles(request):
     )
 
 
-def search_nested(request):
-    query = request.POST["search"]
-    results = Article.objects.filter(title__icontains=query)
-    has_results = results.exists()
+def search(request):
+    query = request.GET.get("q")
+    page_number = request.GET.get("p") or 1
+    results = Article.objects.only("title", "slug").filter(title__icontains=query)
+    paginator = Paginator(results, 10)
+
+    paginated_results = paginator.get_page(page_number)
+
     return render(
         request,
         "htmx/search_results.html",
-        {"results": results, "has_results": has_results},
+        {"paginated_results": paginated_results},
     )
