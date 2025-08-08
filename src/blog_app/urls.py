@@ -1,10 +1,10 @@
 from django.urls import path
-
+from django.views.generic import RedirectView
 from blog_app import views
 
 urlpatterns = [
     path('', views.index, name='index'),
-    path('articles', views.articles, name='articles'),
+    path('articles/', RedirectView.as_view(url='/', permanent=True)),
     path('favorite-articles', views.get_favorites_articles, name='favorite_articles'),
     path('articles-by-tag/<slug:slug>', views.articles_by_tag, name='articles_by_tag'),
     path('articles/<slug:slug>', views.article_detail, name='article_detail'),

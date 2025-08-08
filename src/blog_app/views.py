@@ -5,11 +5,23 @@ from blog_app.models import Article, ArticleTag, FavoriteArticle
 
 # root endpoint
 def index(request):
-    articles = Article.objects.order_by('-creation_date')[:10]
+    articles = Article.objects\
+        .only('title', 'creation_date', 'content_parsed', 'slug')\
+        .order_by('-creation_date')[:10]
     return render(request, "blog/index.html", { 'articles': articles })
 
 def article_detail(request, slug):
-    article = get_object_or_404(Article.objects.prefetch_related('tags'), slug=slug)
+    article = get_object_or_404(
+        Article.objects
+            .only(
+                'slug',
+                'title',
+                'content_parsed',
+                'creation_date',
+                'tags',
+                'last_update_date'
+            ),
+        slug=slug)
 
     article.has_tags = article.tags.exists()
 
@@ -21,10 +33,6 @@ def article_detail(request, slug):
         article.favorited = FavoriteArticle.objects.filter(article_id=article.id, user_id=request.user.id).exists()
 
     return render(request, "blog/article_detail.html", { 'article': article })
-
-def articles(request, n=10):
-    articles = Article.objects.order_by('creation_date')[:n]
-    return render(request, "blog/articles.html", { 'articles': articles })
 
 def articles_by_tag(request, slug):
     tag = get_object_or_404(ArticleTag, slug=slug)

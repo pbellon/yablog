@@ -20,6 +20,12 @@ class ArticleTag(models.Model):
 
 
 class Article(models.Model):
+    class Meta:
+        indexes = [
+            models.Index(fields=['slug']),
+            models.Index(fields=['title'])
+        ]
+
     creation_date = models.DateField(auto_now_add=True)
     last_update_date = models.DateField(auto_now=True)
     title = models.CharField(max_length=140)
