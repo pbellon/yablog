@@ -7,7 +7,13 @@
 {% block content %}
   <h1>Welcome to the Home Page</h1>
 
+  {% if has_articles %}
   <div class="articles">
     {% include 'htmx/paginated_articles.html' with paginated_articles=paginated_articles %}
   </div>
+  {% else %}
+  <p>No articles written yet. Come back later.</p>
+  {% endif %}
+
+
 {% endblock %}

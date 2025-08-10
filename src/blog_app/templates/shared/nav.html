@@ -1,6 +1,6 @@
 {% load inline_static %}
-<nav>
-  <div class="container side-by-side">
+<nav class="row">
+  <div class="container">
     <main>
       <a href="{% url 'index' %}">trb</a>
     </main>
@@ -11,23 +11,17 @@
       <div class="search">
         <label htmlFor="q">
           {% icon 'search' %}
-          <input 
-            name="q"
-            placeholder="Title of article"
-            hx-get="{% url 'search' %}"
-            hx-on::after-request="if(event.detail.successful) document.querySelector('#results').classList.add('visible')"
-            hx-trigger="keyup changed throttle:100ms"
-            hx-target="#results" />
+          <input name="q" hx-indicator="nav aside .htmx-indicator" placeholder="Title of article" hx-get="{% url 'search' %}" hx-on::after-request="if(event.detail.successful) document.querySelector('#results').classList.add('visible')" hx-trigger="keyup changed throttle:100ms" hx-target="#results" />
         </label>
         <div class="htmx-indicator">
-            {% image 'loader' %}
+          {% image 'loader' %}
         </div>
       </div>
       <ul id="results" class="nolist"></ul>
     </aside>
   </div>
   <script>
-    (function () {
+    ;(function () {
       // light / dark theme switching
       document.querySelector('.theme-switcher').addEventListener('click', function () {
         var theme = localStorage.getItem('theme') || 'dark'

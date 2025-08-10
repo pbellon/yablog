@@ -1,4 +1,5 @@
 {% load django_htmx %}
+
 {% load static %}
 
 <!DOCTYPE html>
@@ -7,128 +8,256 @@
 <head>
     <title>{% block title %}Title{% endblock %}</title>
     {% comment %} Minimalistic style to ensure proper display {% endcomment %}
-    <style> 
-        .htmx-indicator {
-            opacity: 0;
-        }
+    <style>
+.htmx-indicator {
+    opacity: 0;
+}
 
-        html.theme--light {
-            --background-color: #dcd7d7ee;
-            --font-color: #333;
-            --link-color: #0b82ea;
-        }
+.icon-holder svg {
+    width: 12px !important;
+    height: 12px !important;
+}
 
-        html.theme--dark {
-            --background-color: #333;
-            --font-color: #DDD;
-            --link-color: #0b82ea;
-        }
+html.theme--light {
+    --background-color: #dcd7d7ee;
+    --font-color: #333;
+    --link-color: #0b82ea;
+}
 
-        html, body {
-            background-color: var(--background-color);
-            margin: 0;
-        }
+html.theme--dark {
+    --background-color: #333;
+    --font-color: #DDD;
+    --link-color: #0b82ea;
+}
 
-        html {
-            color: var(--font-color);
-            font-family: "EB Garamond", setif;
-            font-optical-sizing: auto;
-            font-weight: 400;
-            font-style: normal;
-        }
+a {
+    color: var(--link-color);
+    text-decoration: none;
+    font-weight: 600;
+}
 
-        html .icon-holder svg {
-            height: 1em;
-        }
 
-        .codehilite {
-            color: #333;
-            border-radius: 0.25em;
-            padding: 0.25em;
-        }
+html, body {
+    background-color: var(--background-color);
+    margin: 0;
+}
 
-        html {
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-        }
+html {
+    color: var(--font-color);
+    font-family: "EB Garamond", setif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+}
 
-        body {
-            padding: 1em;
-            padding-top: 0;
-            flex: 1;
-        }
+.codehilite {
+    color: #333;
+    border-radius: 0.25em;
+    padding: 0.25em;
+}
 
-        a {
-            color: var(--link-color);
-        }
+html {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
 
-        nav {
-            background-color: var(--background-color);
-            padding-top: 1em;
-            padding-bottom: 1em;
-            z-index: 200;
-            position: sticky;
-            top: 0;
-        }
+nav {
+    background-color: var(--background-color);
+    padding-top: 1em;
+    padding-bottom: 1em;
+    z-index: 200;
+    position: sticky;
+    top: 0;
+}
 
-        nav #results {
-            background-color: var(--background-color);
-            width: 250px;
-            opacity: 0;
-            height: 0;
-            position: absolute;
-        }
+{% comment %} Basic grid system {% endcomment %}
+:root {
+    /* visual spacing + max content width */
+    --gutter-min: 1rem;
+    --content-max: 90vh;
+    --gap: 1.25rem;
+}
 
-        .side-by-side {
-            display: flex;
-            gap: 1em;
-        }
+body {
+    display: grid;
+    /* full-bleed gutters + two content columns */
+    grid-template-columns:
+        [full-start] minmax(var(--gutter-min), 1fr)
+        [content-start]  minmax(0, 5fr)  minmax(0, 2fr)
+        [content-end]    minmax(var(--gutter-min), 1fr)
+        [full-end];
+    grid-auto-rows: auto;
+    row-gap: 2rem;
+}
 
-        .side-by-side main {
-            flex: 3;
-        }
+.row {
+    grid-column: full;                 /* background spans full width */
+    display: grid;
+    grid-template-columns: subgrid;
+}
 
-        .side-by-side aside {
-            flex: 1;
-        }
+.container {
+    grid-column: content;              /* the two middle tracks */
+    display: grid;
+    grid-template-columns: subgrid;    /* inherit the same two columns */
+    gap: var(--gap);
+    justify-self: center;
+    width: 100%;
+    max-width: var(--content-max);     /* center + clamp total width */
+}
 
-        ul.nolist,ul.nolist li {
-            list-style: none;
-            appearance: unset;
-            margin-left: 0;
-            padding-left: 0;
-        }
+.container main {
+    grid-column: 1;
+}
 
-        .articles .article {
-            margin-top: 2em;
-        }
+.container aside {
+    grid-column: 2;
+}
 
-        .articles .article header {
-            font-size: 1.5em;
-        }
+nav aside .icon-holder {
+    display: inline-flex;
+    align-items: center;
+    line-height: 1;
+}
 
-        nav .container {
-            display: flex;
-            justify-content: space-between;
-            gap: 1em;
-        }
+nav aside .icon-holder svg {
+    display: inline;
+}
 
-        nav .search {
-            display: flex;
-        }
+nav aside .search {
+    position: relative;
+}
 
-        nav aside {
-            justify-content: flex-end;
-            display: flex;
-            gap: 1em;
-        }
+nav aside .htmx-indicator {
+    position: absolute;
+    right: .25rem;
+    top: 0;
+    bottom: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+}
 
-        .container {
-            max-width: 80vw;
-            margin: auto;
-        }
+
+ul.nolist,ul.nolist li {
+    list-style: none;
+    appearance: unset;
+    margin-left: 0;
+    padding-left: 0;
+}
+
+.articles .article {
+    margin-top: 2em;
+}
+
+.articles .article header {
+    font-size: 1.5em;
+}
+
+nav .search label {
+    display: flex;
+}
+
+nav .search label input {
+    box-sizing: border-box;
+    width: 100%;
+    flex-grow: 1;
+    flex-shrink: 1;
+    flex-basis: 12rem;
+    min-width: 0;
+    min-inline-size: 0;
+}
+
+nav aside {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+nav aside .theme-switcher {
+    flex-grow: 0;
+    display: flex;
+    align-items: center;
+}
+
+nav aside .search {
+    flex-grow: 1;
+}
+
+nav aside .search .icon-holder {
+    margin-right: 0.25rem;
+}
+
+nav .htmx-indicator svg {
+    height: 1em;
+}
+
+nav aside {
+    position: relative;
+    z-index: 200;
+}
+
+/* Base styles in `templates/shared/base.html` */
+nav #results {
+    position: absolute;
+
+    background-color: var(--background-color);
+    border-radius: .25em;
+    
+    height: 0;
+    margin-top: 2em;
+    opacity: 0;
+    padding: .33rem;
+    right: 0;
+    top: 0;
+    transition: opacity .200ms ease-in;
+    width: 200px;
+    z-index: 200;
+}
+
+nav #results.visible {
+    opacity: 1;
+    height: auto;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+nav .search .htmx-indicator {
+    color: #333;
+}
+
+.favorite-action.in-favorites .add-to-favorites {
+    display: none;
+}
+
+.favorite-action.not-in-favorites .remove-from-favorites {
+    display: none;
+}
+
+#main-content .articles .htmx-indicator {
+    opacity: 0;
+    height: 50px;
+    transition: opacity 250ms ease-in;
+}
+
+.lazy-loader {
+    text-align: center;
+    margin: auto;
+    margin-top: 2em;
+}
+
+.strip {
+    display: -webkit-box;
+    line-clamp: 4;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    /* max-height: 10em; */
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
     </style>
+    {% comment %} quick localStorage-stored theme restore {% endcomment %}
     <script>
         var theme = localStorage.getItem('theme');
         var htmlTag = document.querySelector("html");
@@ -148,13 +277,15 @@
 
 <body hx-headers='{ "X-CSRFToken": "{{ csrf_token }}" }'>
     {% include "shared/nav.html" %}
-    <div id="main-content" class="side-by-side container">
-        <main>
-            {% block content %}{% endblock %}
-        </main>
-        <aside>
-            {% block side %}{% endblock %}
-        </aside>
+    <div id="main-content" class="row">
+        <div class="container">
+            <main>
+                {% block content %}{% endblock %}
+            </main>
+            <aside>
+                {% block side %}{% endblock %}
+            </aside>
+        </div>
     </div>
     {% htmx_script %}
 

@@ -35,19 +35,28 @@ def paginated_articles(request):
     )
 
 
-# root endpoint
 def index(request):
-    paginator = Paginator(
+    articles_list = (
         Article.objects.only("creation_date", "slug", "title", "content_parsed")
         .order_by("-creation_date")
-        .all(),
+        .all()
+    )
+
+    has_articles = articles_list.exists()
+
+    paginator = Paginator(
+        articles_list,
         10,
     )
 
     # At index we only load first page, see articles_paginated below
     page_obj = paginator.get_page(1)
 
-    return render(request, "blog/index.html", {"paginated_articles": page_obj})
+    return render(
+        request,
+        "blog/index.html",
+        {"has_articles": has_articles, "paginated_articles": page_obj},
+    )
 
 
 def article_detail(request, slug):

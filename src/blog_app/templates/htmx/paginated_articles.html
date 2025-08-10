@@ -3,8 +3,8 @@
 {% for article in paginated_articles %}
   <div class="article">
     <header>
+      <span class="date">{{ article.creation_date }},</span>&nbsp;
       <a hx-boost href="{% url 'article_detail' article.slug %}">
-        <span class="date">{{ article.creation_date }}</span>
         {{ article.title }}
       </a>
     </header>
