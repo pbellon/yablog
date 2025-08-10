@@ -1,3 +1,5 @@
 #!/usr/bin/env bash
 
-uv run src/manage.py ${@}
+uv run \
+    --python cpython3.13\
+    python src/manage.py ${@}
