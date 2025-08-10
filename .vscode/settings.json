@@ -4,6 +4,7 @@
     "editor.defaultFormatter": "charliermarsh.ruff"
   },
   "[django-html]": {
-    "editor.defaultFormatter": "batisteo.vscode-django"
-  }
+    "editor.defaultFormatter": "junstyle.vscode-django-support"
+  },
+  "python.useEnvironmentsExtension": true
 }
