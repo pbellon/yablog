@@ -7,7 +7,10 @@
 
 <head>
     <title>{% block title %}Title{% endblock %}</title>
-    {% comment %} Minimalistic style to ensure proper display {% endcomment %}
+    {% comment %}
+      Minimalistic style to ensure proper display. Did that on purpose
+      to avoid loading extraneous CSS and speed up first loading.
+    {% endcomment %}
     <style>
 .htmx-indicator {
   opacity: 0;
@@ -26,33 +29,67 @@
   }
 }
 
+/**
+ * Color palette for the whole site
+ * https://coolors.co/palette/001524-15616d-ffecd1-ff7d00
+ */
+:root {
+  --rich-black: #001524ff;
+  --caribbean-current: #15616dff;
+  --papaya-whip: #ffecd1ff;
+  --orange-wheel: #ff7d00ff;
+  --transition-dur: 100ms;
+}
+
 html.theme--light {
-  --background-color: #dcd7d7ee;
-  --font-color: #333;
-  --link-color: #0b82ea;
+  --background-color: var(--papaya-whip);
+  --font-color: var(--rich-black);
+  --link-color: var(--orange-wheel);
+
+  --btn-bg-color: var(--caribbean-current);
+  --btn-font-color: var(--papaya-whip);
 }
 
 html.theme--dark {
-  --background-color: #333;
-  --font-color: #DDD;
-  --link-color: #0b82ea;
-  --neutral-accent: #556a75;
+  --background-color: var(--rich-black);
+  --font-color: var(--papaya-whip);
+  --link-color: var(--orange-wheel);
+  --btn-bg-color: var(--caribbean-current);
+  --btn-font-color: var(--papaya-whip);
 }
 
 a {
   color: var(--link-color);
+  transition: filter var(--transition-dur) ease-in;
   text-decoration: none;
   font-weight: 600;
+
+  &:hover {
+    filter: hue-rotate(-45deg);
+  }
 }
 
 .btn {
-  color: var(--font-color);
-  background-color: var(--neutral-accent);
+  color: var(--btn-font-color);
+  background-color: var(--btn-bg-color);
+
   border-radius: .25rem;
   padding: .125rem .25rem;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
+
+  transition:
+    color var(--transition-dur) ease-in,
+    background-color var(--transition-dur) ease-in;
+
+  &:hover, &:focus {
+    filter: none;
+    outline: none;
+    
+    color: var(--btn-bg-color);
+    background-color: var(--btn-font-color);
+  }
 
   .icon-holder {
     margin-right: .25rem;
@@ -199,6 +236,7 @@ nav {
       flex-grow: 0;
       display: flex;
       align-items: center;
+      cursor: pointer;
     }
 
 
@@ -218,20 +256,21 @@ nav {
   }
 
   #results {
+    background-color: var(--btn-bg-color);
     position: absolute;
-    background-color: var(--neutral-accent);
     border-radius: .25em;
     height: 0;
     margin-top: 2em;
     opacity: 0;
     right: 0;
     top: 0;
-    transition: opacity .200ms ease-in;
+    transition: opacity var(--transition-dur) ease-in;
     width: 200px;
     z-index: 200;
     display: flex;
     flex-direction: column;
     align-items: stretch;
+
     
     &.visible {
       opacity: 1;
@@ -246,15 +285,13 @@ nav {
     }
 
     a {
+      border-radius: 0;
       padding: .33rem;
-      color: var(--font-color);
       flex: 1;
-
-      &:focus {
-        outline: none;
-        background-color: var(--font-color);
-        color: var(--background-color);
-      }
+    }
+    
+    .no-results {
+      padding: .33rem;
     }
   }
 }

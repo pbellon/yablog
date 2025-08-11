@@ -1,5 +1,5 @@
 from django.urls import path
-from django.views.generic import RedirectView
+from django.views.generic import RedirectView, TemplateView
 from blog_app import views
 
 urlpatterns = [
@@ -16,13 +16,14 @@ urlpatterns = [
     ),
     path("search", views.search, name="search"),
     path(
-        "add-to-favorites/<int:id>",
+        "favorites/add/<int:id>",
         views.add_article_to_favorites,
         name="add_article_to_favorites",
     ),
     path(
-        "remove-from-favorites/<int:id>",
+        "favorites/remove/<int:id>",
         views.remove_article_from_favorites,
         name="remove_article_from_favorites",
     ),
+    path("robots.txt", TemplateView.as_view(template_name="robots.txt", content_type="text/plain")),
 ]

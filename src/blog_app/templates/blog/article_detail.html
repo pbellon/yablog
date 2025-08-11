@@ -6,56 +6,82 @@
 {% endblock %}
 
 {% block content %}
-  {% if user.is_authenticated %}
-    <div class="favorite-action {% if article.favorited %}in-favorites{% else %}not-in-favorites{% endif %}">
-      <a class="btn add-to-favorites"
-          hx-post="{% url 'add_article_to_favorites' article.id %}"
-          hx-target="#favorites"
-          hx-on::after-request="if (event.detail.successful) showUnfavorite()">
-        {% icon 'star' %}Add to Favorites
-      </a>
-      <a class="btn remove-from-favorites"
-          hx-post="{% url 'remove_article_from_favorites' article.id %}"
-          hx-target="#favorites"
-          hx-on::after-request="if (event.detail.successful) showFavorite()">
-        {% icon 'star-filled' %}Remove from favorites
-      </a>
-    </div>
-    <script>
-      // to call after unfavorite success
-      window.showFavorite = function () {
-        var action = document.querySelector('.favorite-action')
-        action.classList.remove('in-favorites')
-        action.classList.add('not-in-favorites')
-      }
-      
-      // to call after add favorite success
-      window.showUnfavorite = function () {
-        var action = document.querySelector('.favorite-action')
-        action.classList.add('in-favorites')
-        action.classList.remove('not-in-favorites')
-      }
-    </script>
-  {% endif %}
+  <article>
+    <header>
+      <h1>{{ article.title }}</h1>
 
-  <h1>{{ article.title }}</h1>
-  {{ article.content_parsed|safe }}
+      <p>
+        Published on 
+        <time datetime="{{article.creation_date|date:'c'}}">
+          {{article.creation_date}}
+        </time>
+        {% if article.last_modification_date %}
+          &middot; Last modified on 
+          <time datetime="{{article.last_modification_date|date:'c'}}">
+            {{article.last_modification_date}}
+          </time>
+        {% endif %}
+      </p>
+      {% if user.is_authenticated %}
+        <div class="favorite-action {% if article.favorited %}in-favorites{% else %}not-in-favorites{% endif %}">
+          <a class="btn add-to-favorites"
+              hx-post="{% url 'add_article_to_favorites' article.id %}"
+              hx-target="#favorites"
+              hx-on::after-request="if (event.detail.successful) showUnfavorite()">
+            {% icon 'star' %}Add to Favorites
+          </a>
+          <a class="btn remove-from-favorites"
+              hx-post="{% url 'remove_article_from_favorites' article.id %}"
+              hx-target="#favorites"
+              hx-on::after-request="if (event.detail.successful) showFavorite()">
+            {% icon 'star-filled' %}Remove from favorites
+          </a>
+        </div>
+        <script>
+          // to call after unfavorite success
+          window.showFavorite = function () {
+            var action = document.querySelector('.favorite-action')
+            action.classList.remove('in-favorites')
+            action.classList.add('not-in-favorites')
+          }
 
-  {% if article.has_tags %}
+          // to call after add favorite success
+          window.showUnfavorite = function () {
+            var action = document.querySelector('.favorite-action')
+            action.classList.add('in-favorites')
+            action.classList.remove('not-in-favorites')
+          }
+        </script>
+      {% endif %}
+    </header>
+
+    {{ article.content_parsed|safe }}
+
     <footer>
-      {% include 'shared/tags_list.html' with tags=article.all_tags %}
-    </footer>
-  {% endif %}
+      {% if article.has_tags %}
+        {% include 'shared/tags_list.html' with tags=article.all_tags %}
+      {% endif %}
+    </footer> 
+  </article>
 {% endblock %}
 
 {% block side %}
   {% if user.is_authenticated %}
-    <div id="favorites" hx-trigger="load" hx-get="{% url 'favorite_articles' %}"></div>
+    <div id="favorites"
+      hx-trigger="load"
+      hx-get="{% url 'favorite_articles' %}">
+      <div class="htmx-indicator">
+        {% image "loader" %}
+      </div>
+    </div>
   {% endif %}
 
   <h3>Other articles</h3>
-
-  <ul hx-get="{% url 'other_articles' article.slug %}" hx-trigger="load" hx-swap="outerHTML">
-    <li>Loading</li>
+  <ul hx-get="{% url 'other_articles' article.slug %}"
+      hx-trigger="load"
+      hx-swap="outerHTML">
+    <div class="htmx-indicator">
+      {% image "loader" %}
+    </div>
   </ul>
 {% endblock %}

@@ -1,12 +1,22 @@
 {% extends 'shared/base.html' %}
 
 {% block title %}
-  Home
+  / | @pbellon
 {% endblock %}
 
 {% block content %}
-  <h1>Welcome to the Home Page</h1>
+  <h1 style="font-family: monospace">@pbellon's blog</h1>
+  <p>
+    You'll find here some articles talking about web 
+    development, programming in general and, occasionaly,
+    personal opinions.
+  </p>
+  <p>
+    I don't use social medias but you can follow my hobby projects
+    on <a href="https://github.com/pbellon">github/@pbellon</a>
+  </p>
 
+  <h2>Latest articles</h2>
   {% if has_articles %}
   <div class="articles">
     {% include 'htmx/paginated_articles.html' with paginated_articles=paginated_articles %}

@@ -1,6 +1,7 @@
 {% for result in paginated_results %}
     <li>
-      <a href="{% url 'article_detail' result.slug %}"
+      <a  class="btn"
+          href="{% url 'article_detail' result.slug %}"
           tabindex="0"
           hx-boost>
         {{ result.title }}
@@ -17,5 +18,8 @@
         hx-indicator="nav .search .htmx-indicator">
     </li>
 {% else %}
+  {% if paginated_results.number == 1 %}
+    <li class="no-results">No results found</li>
+  {% endif %}
 <!-- no more search results -->
 {% endif %}
