@@ -2,14 +2,14 @@
 
 {% for article in paginated_articles %}
   <article>
-    <header>
+    <h3>
       <time datetime="{{ article.creation_date | date:'c'}}">
         {{ article.creation_date }}
       </time>,&nbsp;
       <a hx-boost href="{% url 'article_detail' article.slug %}">
         {{ article.title }}
       </a>
-    </header>
+    </h3>
 
     <div class="strip">{{ article.content_parsed|safe }}</div>
   </article>
