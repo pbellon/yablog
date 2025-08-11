@@ -1,4 +1,4 @@
-# yablog (yet anoter blog system)
+# yablog (yet another blog system)
 
 This project is here for me to catch up with latest django updates and, at the same time, experiment with [htmx][htmx]. Might really use this later.
 
