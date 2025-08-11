@@ -51,6 +51,7 @@
 
 html.theme--light {
   --background-color: var(--papaya-whip);
+  --nav-bg-color: var(--papaya-whip);
   --font-color: var(--rich-black);
   --link-color: var(--orange-wheel);
 
@@ -60,6 +61,7 @@ html.theme--light {
 
 html.theme--dark {
   --background-color: var(--rich-black);
+  --nav-bg-color: var(--rich-black);
   --font-color: var(--papaya-whip);
   --link-color: var(--orange-wheel);
   --btn-bg-color: var(--caribbean-current);
@@ -79,7 +81,9 @@ a {
 
 .btn {
   color: var(--btn-font-color);
-  background-color: var(--btn-bg-color);
+  background-color: rgba(from var(--btn-bg-color) r g b / 0.6);
+  backdrop-filter: blur(5px);
+
   border: 1px solid transparent;
 
   border-radius: .25rem;
@@ -90,7 +94,7 @@ a {
 
   transition:
     color var(--transition-dur) ease-in,
-    background-color var(--transition-dur) ease-in
+    background-color var(--transition-dur) ease-in,
     border-color var(--transition-dur) ease-in;
 
   &:hover, &:focus {
@@ -202,12 +206,13 @@ ul.nolist li {
 }
 
 nav {
-  background-color: var(--background-color);
-  padding-top: 1em;
+  backdrop-filter: blur(5px);
+  background-color: rgba(from var(--nav-bg-color) r g b / 0.8);
   padding-bottom: 1em;
-  z-index: 200;
+  padding-top: 1em;
   position: sticky;
   top: 0;
+  z-index: 200;
 
 
   .search {
@@ -270,20 +275,21 @@ nav {
   }
 
   #results {
-    background-color: var(--btn-bg-color);
-    position: absolute;
+    align-items: stretch;
+    backdrop-filter: blur(5px);
+    background-color: rgba(from var(--btn-bg-color) r g b / 0.7);
     border-radius: .25em;
+    display: flex;
+    flex-direction: column;
     height: 0;
     margin-top: 2em;
     opacity: 0;
+    position: absolute;
     right: 0;
     top: 0;
     transition: opacity var(--transition-dur) ease-in;
     width: 200px;
     z-index: 200;
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
 
     
     &.visible {
@@ -303,7 +309,19 @@ nav {
       padding: .33rem;
       flex: 1;
     }
-    
+
+    .btn {
+      background-color: transparent;
+      backdrop-filter: none;
+      font-weight: normal;
+      border: 0;
+
+      &:hover, &:focus {
+        color: var(--btn-bg-color);
+        background-color: var(--btn-font-color);
+      }
+    }
+ 
     .no-results {
       padding: .33rem;
       color: var(--btn-font-color);
