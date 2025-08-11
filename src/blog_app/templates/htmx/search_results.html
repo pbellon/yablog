@@ -1,3 +1,9 @@
+{% if paginated_results.number == 1 and not has_results %}
+  <li class="no-results">
+    No results found
+  </li>
+{% endif %}
+
 {% for result in paginated_results %}
     <li>
       <a  class="btn"
@@ -18,8 +24,5 @@
         hx-indicator="nav .search .htmx-indicator">
     </li>
 {% else %}
-  {% if paginated_results.number == 1 %}
-    <li class="no-results">No results found</li>
-  {% endif %}
 <!-- no more search results -->
 {% endif %}

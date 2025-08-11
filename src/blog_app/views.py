@@ -170,11 +170,15 @@ def search(request):
     results = Article.objects.only("title", "slug").filter(title__icontains=query)
     paginator = Paginator(results, 10)
 
+    has_results = results.exists()
 
     paginated_results = paginator.get_page(page_number)
 
     return render(
         request,
         "htmx/search_results.html",
-        {"paginated_results": paginated_results},
+        {
+            "has_results": has_results,
+            "paginated_results": paginated_results
+        },
     )

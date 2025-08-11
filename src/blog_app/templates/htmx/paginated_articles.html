@@ -1,16 +1,18 @@
 {% load inline_static %}
 
 {% for article in paginated_articles %}
-  <div class="article">
+  <article>
     <header>
-      <span class="date">{{ article.creation_date }},</span>&nbsp;
+      <time datetime="{{ article.creation_date | date:'c'}}">
+        {{ article.creation_date }}
+      </time>,&nbsp;
       <a hx-boost href="{% url 'article_detail' article.slug %}">
         {{ article.title }}
       </a>
     </header>
 
     <div class="strip">{{ article.content_parsed|safe }}</div>
-  </div>
+  </article>
 {% endfor %}
 
 {% if paginated_articles.has_next %}

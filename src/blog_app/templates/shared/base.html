@@ -6,7 +6,7 @@
 <html>
 
 <head>
-    <title>{% block title %}Title{% endblock %}</title>
+    <title>{% block title %}{% endblock %} >> @pbellon's blog</title>
     {% comment %}
       Minimalistic style to ensure proper display. Did that on purpose
       to avoid loading extraneous CSS and speed up first loading.
@@ -72,6 +72,7 @@ a {
 .btn {
   color: var(--btn-font-color);
   background-color: var(--btn-bg-color);
+  border: 1px solid transparent;
 
   border-radius: .25rem;
   padding: .125rem .25rem;
@@ -81,7 +82,8 @@ a {
 
   transition:
     color var(--transition-dur) ease-in,
-    background-color var(--transition-dur) ease-in;
+    background-color var(--transition-dur) ease-in
+    border-color var(--transition-dur) ease-in;
 
   &:hover, &:focus {
     filter: none;
@@ -89,6 +91,10 @@ a {
     
     color: var(--btn-bg-color);
     background-color: var(--btn-font-color);
+  }
+
+  .theme--light &:hover, &:focus {
+    border-color: var(--btn-bg-color);
   }
 
   .icon-holder {
@@ -178,7 +184,7 @@ ul.nolist li {
 }
 
 .articles {
-  .article {
+  article {
     margin-top: 2em;
 
     header {
@@ -292,6 +298,7 @@ nav {
     
     .no-results {
       padding: .33rem;
+      color: var(--btn-font-color);
     }
   }
 }
