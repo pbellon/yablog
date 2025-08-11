@@ -29,6 +29,14 @@
   }
 }
 
+* {
+  & h1, & h2, & h3 {
+    &:first-child {
+      margin-top: 0;
+    }
+  }
+}
+
 /**
  * Color palette for the whole site
  * https://coolors.co/palette/001524-15616d-ffecd1-ff7d00
@@ -320,6 +328,21 @@ nav {
   margin-top: 2em;
 }
 
+.tags {
+  display: flex;
+  gap: 1rem;
+}
+
+.tag {
+  a {
+    font-family: monospace;
+
+    &::before {
+      content: '#';
+    }
+  }
+}
+
 .strip {
   display: -webkit-box;
   line-clamp: 4;
@@ -340,7 +363,6 @@ nav {
             htmlTag.classList.add('theme--dark');
         }
     </script>
-    <link rel="stylesheet" href="{% static "css/main.css" %}" />
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
