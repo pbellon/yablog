@@ -23,12 +23,14 @@
       {% if user.is_authenticated %}
         <div class="favorite-action {% if article.favorited %}in-favorites{% else %}not-in-favorites{% endif %}">
           <a class="btn add-to-favorites"
+              tabindex="0"
               hx-post="{% url 'add_article_to_favorites' article.id %}"
               hx-target="#favorites"
               hx-on::after-request="if (event.detail.successful) showUnfavorite()">
             {% icon 'star' %}Add to Favorites
           </a>
           <a class="btn remove-from-favorites"
+              tabindex="0"
               hx-post="{% url 'remove_article_from_favorites' article.id %}"
               hx-target="#favorites"
               hx-on::after-request="if (event.detail.successful) showFavorite()">

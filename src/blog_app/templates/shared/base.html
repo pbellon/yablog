@@ -47,6 +47,10 @@
   --papaya-whip: #ffecd1ff;
   --orange-wheel: #ff7d00ff;
   --transition-dur: 100ms;
+
+  /** Theme independant colors */
+  --btn-bg-color: var(--caribbean-current);
+  --btn-font-color: var(--papaya-whip);
 }
 
 html.theme--light {
@@ -54,9 +58,6 @@ html.theme--light {
   --nav-bg-color: var(--papaya-whip);
   --font-color: var(--rich-black);
   --link-color: var(--orange-wheel);
-
-  --btn-bg-color: var(--caribbean-current);
-  --btn-font-color: var(--papaya-whip);
 }
 
 html.theme--dark {
@@ -64,8 +65,6 @@ html.theme--dark {
   --nav-bg-color: var(--rich-black);
   --font-color: var(--papaya-whip);
   --link-color: var(--orange-wheel);
-  --btn-bg-color: var(--caribbean-current);
-  --btn-font-color: var(--papaya-whip);
 }
 
 a {
@@ -84,7 +83,7 @@ a {
   background-color: rgba(from var(--btn-bg-color) r g b / 0.6);
   backdrop-filter: blur(5px);
 
-  border: 1px solid transparent;
+  border: 1px solid var(--btn-bg-color);
 
   border-radius: .25rem;
   padding: .125rem .25rem;
@@ -93,20 +92,13 @@ a {
   align-items: center;
 
   transition:
-    color var(--transition-dur) ease-in,
-    background-color var(--transition-dur) ease-in,
-    border-color var(--transition-dur) ease-in;
+    background-color var(--transition-dur) ease-in;
 
   &:hover, &:focus {
     filter: none;
     outline: none;
     
-    color: var(--btn-bg-color);
-    background-color: var(--btn-font-color);
-  }
-
-  .theme--light &:hover, &:focus {
-    border-color: var(--btn-bg-color);
+    background-color: var(--btn-bg-color);
   }
 
   .icon-holder {
@@ -278,6 +270,7 @@ nav {
     align-items: stretch;
     backdrop-filter: blur(5px);
     background-color: rgba(from var(--btn-bg-color) r g b / 0.7);
+    border: 1px solid var(--btn-bg-color);
     border-radius: .25em;
     display: flex;
     flex-direction: column;
@@ -290,6 +283,7 @@ nav {
     transition: opacity var(--transition-dur) ease-in;
     width: 200px;
     z-index: 200;
+
 
     
     &.visible {
@@ -317,8 +311,7 @@ nav {
       border: 0;
 
       &:hover, &:focus {
-        color: var(--btn-bg-color);
-        background-color: var(--btn-font-color);
+        background-color: var(--btn-bg-color);
       }
     }
  
