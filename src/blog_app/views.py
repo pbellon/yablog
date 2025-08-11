@@ -4,7 +4,6 @@ from django.shortcuts import get_object_or_404, render
 
 from blog_app.models import Article, ArticleTag, FavoriteArticle
 
-
 def paginated_articles(request):
     page_number = request.GET.get("p")
     tag_filter = request.GET.get("tag")
@@ -170,6 +169,7 @@ def search(request):
     page_number = request.GET.get("p") or 1
     results = Article.objects.only("title", "slug").filter(title__icontains=query)
     paginator = Paginator(results, 10)
+
 
     paginated_results = paginator.get_page(page_number)
 

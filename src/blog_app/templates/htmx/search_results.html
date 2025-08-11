@@ -1,10 +1,18 @@
 {% for result in paginated_results %}
-    <li><a hx-boost href="{% url 'article_detail' result.slug %}">{{ result.title }}</a></li>
+    <li>
+      <a href="{% url 'article_detail' result.slug %}"
+          tabindex="0"
+          hx-boost>
+        {{ result.title }}
+      </a>
+    </li>
 {% endfor %}
 
 {% if paginated_results.has_next %}
     <li hx-get="{% url 'search' %}"
         hx-vals='{"q": "{{query}}", "p": "{{paginated_results.next_page_number}}" }'
+        hx-target="this"
+        hx-swap="outerHTML"
         hx-trigger="intersect once"
         hx-indicator="nav .search .htmx-indicator">
     </li>

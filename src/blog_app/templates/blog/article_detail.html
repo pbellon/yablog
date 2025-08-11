@@ -1,60 +1,61 @@
-{% extends "shared/base.html" %}
+{% extends 'shared/base.html' %}
+{% load inline_static %}
 
-{% block title%}{{ article.title }}{% endblock %}
+{% block title %}
+  {{ article.title }}
+{% endblock %}
 
 {% block content %}
-    {% if user.is_authenticated %}
-        <div class="favorite-action {% if article.favorited %}in-favorites{% else %}not-in-favorites{% endif %}">
-            <a class="btn add-to-favorites"
-                hx-post="{% url 'add_article_to_favorites' article.id %}"
-                hx-target="#favorites"
-                hx-on::after-request="if (event.detail.successful) showUnfavorite()"
-            >
-                Add to Favorites
-            </a>
-            <a class="btn remove-from-favorites"
-                hx-post="{% url 'remove_article_from_favorites' article.id %}"
-                hx-target="#favorites"
-                hx-on::after-request="if (event.detail.successful) showFavorite()"
-            >
-                Remove from favorites
-            </a>
-        </div>
-        <script>
-            // to call after unfavorite success
-            window.showFavorite = function() {
-                var action = document.querySelector('.favorite-action');
-                action.classList.remove('in-favorites');
-                action.classList.add('not-in-favorites');
-            };
+  {% if user.is_authenticated %}
+    <div class="favorite-action {% if article.favorited %}in-favorites{% else %}not-in-favorites{% endif %}">
+      <a class="btn add-to-favorites"
+          hx-post="{% url 'add_article_to_favorites' article.id %}"
+          hx-target="#favorites"
+          hx-on::after-request="if (event.detail.successful) showUnfavorite()">
+        {% icon 'star' %}Add to Favorites
+      </a>
+      <a class="btn remove-from-favorites"
+          hx-post="{% url 'remove_article_from_favorites' article.id %}"
+          hx-target="#favorites"
+          hx-on::after-request="if (event.detail.successful) showFavorite()">
+        {% icon 'star-filled' %}Remove from favorites
+      </a>
+    </div>
+    <script>
+      // to call after unfavorite success
+      window.showFavorite = function () {
+        var action = document.querySelector('.favorite-action')
+        action.classList.remove('in-favorites')
+        action.classList.add('not-in-favorites')
+      }
+      
+      // to call after add favorite success
+      window.showUnfavorite = function () {
+        var action = document.querySelector('.favorite-action')
+        action.classList.add('in-favorites')
+        action.classList.remove('not-in-favorites')
+      }
+    </script>
+  {% endif %}
 
-            // to call after add favorite success
-            window.showUnfavorite = function() {
-                var action = document.querySelector('.favorite-action');
-                action.classList.add('in-favorites');
-                action.classList.remove('not-in-favorites');
-            };
-        </script>
-    {% endif %}
+  <h1>{{ article.title }}</h1>
+  {{ article.content_parsed|safe }}
 
-    <h1>{{ article.title }}</h1>
-    {{ article.content_parsed|safe }}
-
-    {% if article.has_tags %}
-        <footer>
-            {% include "shared/tags_list.html" with tags=article.all_tags %}
-        </footer>
-    {% endif %}
+  {% if article.has_tags %}
+    <footer>
+      {% include 'shared/tags_list.html' with tags=article.all_tags %}
+    </footer>
+  {% endif %}
 {% endblock %}
 
 {% block side %}
-{% if user.is_authenticated %}
+  {% if user.is_authenticated %}
     <div id="favorites" hx-trigger="load" hx-get="{% url 'favorite_articles' %}"></div>
-{% endif %}
+  {% endif %}
 
-<h3>Other articles</h3>
+  <h3>Other articles</h3>
 
-<ul hx-get="{% url 'other_articles' article.slug %}" hx-trigger="load" hx-swap="outerHTML">
+  <ul hx-get="{% url 'other_articles' article.slug %}" hx-trigger="load" hx-swap="outerHTML">
     <li>Loading</li>
-</ul>
+  </ul>
 {% endblock %}

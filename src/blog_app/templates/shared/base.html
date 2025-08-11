@@ -14,9 +14,16 @@
   transition: opacity 250ms ease-in;
 }
 
-.icon-holder svg {
-  width: 12px !important;
-  height: 12px !important;
+.icon-holder {
+  display: inline-flex;
+  align-items: center;
+  line-height: 1;
+
+  svg {
+    display: inline;
+    width: 12px !important;
+    height: 12px !important;
+  }
 }
 
 html.theme--light {
@@ -29,12 +36,27 @@ html.theme--dark {
   --background-color: #333;
   --font-color: #DDD;
   --link-color: #0b82ea;
+  --neutral-accent: #556a75;
 }
 
 a {
   color: var(--link-color);
   text-decoration: none;
   font-weight: 600;
+}
+
+.btn {
+  color: var(--font-color);
+  background-color: var(--neutral-accent);
+  border-radius: .25rem;
+  padding: .125rem .25rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+
+  .icon-holder {
+    margin-right: .25rem;
+  }
 }
 
 
@@ -49,6 +71,7 @@ html {
   font-family: "EB Garamond", setif;
   font-optical-sizing: auto;
   font-weight: 400;
+  font-size: 1.12rem;
   font-style: normal;
   height: 100%;
   display: flex;
@@ -77,7 +100,7 @@ body {
     [content-end] minmax(var(--gutter-min), 1fr) 
     [full-end];
   grid-auto-rows: auto;
-  row-gap: 2rem;
+  row-gap: 1rem;
 }
 
 .row {
@@ -122,7 +145,7 @@ ul.nolist li {
     margin-top: 2em;
 
     header {
-      font-size: 1.5em;
+      font-size: 1.5rem;
     }
   }
 }
@@ -135,15 +158,6 @@ nav {
   position: sticky;
   top: 0;
 
-  .icon-holder {
-    display: inline-flex;
-    align-items: center;
-    line-height: 1;
-
-    svg {
-      display: inline;
-    }
-  }
 
   .search {
     position: relative;
@@ -203,26 +217,44 @@ nav {
     }
   }
 
-
   #results {
     position: absolute;
-    background-color: var(--background-color);
+    background-color: var(--neutral-accent);
     border-radius: .25em;
     height: 0;
     margin-top: 2em;
     opacity: 0;
-    padding: .33rem;
     right: 0;
     top: 0;
     transition: opacity .200ms ease-in;
     width: 200px;
     z-index: 200;
-
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    
     &.visible {
       opacity: 1;
       height: auto;
       max-height: 200px;
       overflow-y: auto;
+    }
+
+    li {
+      display: flex;
+      align-items: stretch;
+    }
+
+    a {
+      padding: .33rem;
+      color: var(--font-color);
+      flex: 1;
+
+      &:focus {
+        outline: none;
+        background-color: var(--font-color);
+        color: var(--background-color);
+      }
     }
   }
 }
